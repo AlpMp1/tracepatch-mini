@@ -1,1 +1,3 @@
-# tracepatch-mini
+# TracePatch Studio
+
+AI CI Failure Triage Workspace

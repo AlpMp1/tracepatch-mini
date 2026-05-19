@@ -1,0 +1,23 @@
+<html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>TracePatch Studio</title><style>body{margin:0;font-family:Arial,sans-serif;background:#07111f;color:#eef6ff}.wrap{width:min(1100px,calc(100% - 32px));margin:auto}.hero{padding:80px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.card{background:#0f1d32;border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:24px}h1{font-size:72px;line-height:.92;letter-spacing:-.06em}.grad{background:linear-gradient(90deg,#fff,#7fefff,#b6a6ff);-webkit-background-clip:text;color:transparent}p{line-height:1.8;color:#bfd0e4}.btn{display:inline-block;padding:12px 18px;border-radius:999px;background:linear-gradient(135deg,#63e7d7,#6cb7ff);color:#04101d;font-weight:700}.badge{display:inline-block;padding:8px 12px;border-radius:999px;background:#25131a;color:#ffcdcd;font-size:12px}.log,.diff{font-family:monospace;background:#08101a;border-radius:16px;padding:16px;white-space:pre-wrap;font-size:12px;line-height:1.7}.section{padding:28px 0}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.feature{padding:18px}.timeline{display:grid;gap:14px}.step{padding:16px;border-radius:18px;background:#13223b}small{color:#63e7d7;font-weight:700}.add{color:#8ef0b2}.remove{color:#ffb6b6}@media(max-width:900px){.grid,.cards{grid-template-columns:1fr}h1{font-size:48px}}</style></head><body><div class='wrap hero'><div class='grid'><div><div style='padding:8px 12px;border-radius:999px;background:#102337;display:inline-block'>Multi-agent CI debugging</div><h1>Turn failing pipelines into <span class='grad'>review-ready patches</span>.</h1><p>TracePatch Studio 是一个面向开源项目与小团队的 AI CI 失败诊断与自动修复工作台。它可以读取测试日志、PR diff、依赖变更与历史修复记录，自动定位根因、生成补丁、补全回归测试，并输出可复盘的 Review 报告。</p><a class='btn'>Open Workspace</a></div><div class='card'><div class='badge'>CI FAILED</div><h3>Dependency bump introduced unstable cache invalidation</h3><div class='log'>$ pnpm test
+
+FAIL src/cache/cache.test.ts
+TypeError: Cannot read properties of undefined
+
+Affected commit: 91a2f4d
+Updated packages:
+- react-query@6.1.0
+- zustand@5.0.0</div></div></div></div><div class='wrap section'><h2>Repository-scale debugging.</h2><div class='cards'><div class='card feature'><h3>Root Cause Graph</h3><p>读取 stack trace 与依赖变更，构建失败传播路径。</p></div><div class='card feature'><h3>Regression Test</h3><p>自动生成最小回归测试并验证补丁。</p></div><div class='card feature'><h3>Patch Planning</h3><p>优先生成低风险、小范围 patch。</p></div><div class='card feature'><h3>Review Reports</h3><p>输出 PR 摘要、风险等级与回滚建议。</p></div></div></div><div class='wrap section'><div class='grid'><div class='card'><h3>Repository Overview</h3><div class='diff'>Repository: react-dashboard-enterprise
+Language Mix: TypeScript · React · Node.js
+Changed Files: 14 files · 1,832 LOC
+
+Architect Agent Findings:
+• undefined query payload edge case
+• stale cache reference mutation</div></div><div class='card'><h3>Agent Timeline</h3><div class='timeline'><div class='step'><small>ARCHITECT AGENT</small><h4>Repository indexing & dependency graph</h4></div><div class='step'><small>PLANNER AGENT</small><h4>Minimal patch strategy</h4></div><div class='step'><small>PATCH AGENT</small><h4>Patch synthesis & replay</h4></div><div class='step'><small>REVIEW AGENT</small><h4>Risk review & rollout notes</h4></div></div></div></div></div><div class='wrap section'><div class='grid'><div class='card'><h3>Generated Patch</h3><div class='diff'><span class='remove'>- invalidateEntries(payload.queryKey)</span>
+
+<span class='add'>+ if (!payload?.queryKey) return []</span>
+<span class='add'>+ const normalizedKey = normalizeQueryKey(payload.queryKey)</span>
+<span class='add'>+ invalidateEntries(normalizedKey)</span></div></div><div class='card'><h3>Review Summary</h3><div class='diff'>Risk Level: LOW
+
+• unit tests: PASS
+• typecheck: PASS
+• smoke tests: PASS</div></div></div></div></body></html>
